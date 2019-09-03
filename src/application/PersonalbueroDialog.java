@@ -152,10 +152,16 @@ public class PersonalbueroDialog extends Stage {
 			mitarbeiter.setEintr(spEintrjahr.getValue());
 			mitarbeiter.setGesch(cbGesch.isSelected()? 'm':'f');
 			
+			Main.showAlert(Alert.AlertType.CONFIRMATION, "Änderungen erfolgreich!");
+			close();
 		}
 		catch(PersonalException e){
 			Main.showAlert(Alert.AlertType.ERROR, e.getMessage());
 		}
+	}
+	
+	public void hinzufuegen(){
+		//dialogRootGridPane
 	}
 	
 	
