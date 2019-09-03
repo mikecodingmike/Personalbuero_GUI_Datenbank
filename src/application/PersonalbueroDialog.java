@@ -136,7 +136,7 @@ public class PersonalbueroDialog extends Stage {
 		showAndWait();
 	}
 	
-	public void setDialogTitle(Mitarbeiter mitarbeiter){
+	private void setDialogTitle(Mitarbeiter mitarbeiter){
 		/*here we can set the title of the dialog to fit the type of mitarbeiter being viewed*/
 		String titleTop = mitarbeiter.getClass().getSimpleName();
 		setTitle(titleTop +"-Daten bearbeiten");
