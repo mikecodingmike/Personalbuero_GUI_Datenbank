@@ -87,6 +87,7 @@ public class PersonalbueroUebersicht extends TableView<Mitarbeiter> {
     }
     
     
+    
     class MyContectMenu extends ContextMenu{
         
         private MenuItem miAendern, miLoeschen;

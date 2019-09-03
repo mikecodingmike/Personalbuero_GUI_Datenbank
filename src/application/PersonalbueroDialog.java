@@ -7,10 +7,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import model.Angestellter;
-import model.Freelancer;
-import model.Manager;
-import model.Mitarbeiter;
+import model.*;
 
 import java.time.Year;
 
@@ -97,7 +94,7 @@ public class PersonalbueroDialog extends Stage {
 	}
 	
 	public void btOk(){
-		//rootBorderPane.uebernehmen();
+		//uebernehmen();
 		close();
 	}
 	
@@ -106,7 +103,7 @@ public class PersonalbueroDialog extends Stage {
 	}
 	
 	public void addListeners(){
-		btOk.setOnAction(event -> btOk());
+		btOk.setOnAction(event -> uebernehmen());
 		btAbbrechen.setOnAction(event -> btAbbrechen());
 		slManagerFixum.valueProperty().addListener(event -> lbslAktManagerFixumUpdate());
 	}
@@ -146,6 +143,19 @@ public class PersonalbueroDialog extends Stage {
 	/*This method updates the Label next to the slider to give the actual value being shown on the slider*/
 	private void lbslAktManagerFixumUpdate(){
 		lbslAktManagerFixum.setText(String.format("Akt: %4.0f",slManagerFixum.getValue()));
+	}
+	
+	public void uebernehmen(){
+		try {
+			mitarbeiter.setName(tfName.getText());
+			mitarbeiter.setAdresse(tfAdresse.getText());
+			mitarbeiter.setEintr(spEintrjahr.getValue());
+			mitarbeiter.setGesch(cbGesch.isSelected()? 'm':'f');
+			
+		}
+		catch(PersonalException e){
+			Main.showAlert(Alert.AlertType.ERROR, e.getMessage());
+		}
 	}
 	
 	
