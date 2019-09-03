@@ -38,6 +38,7 @@ public class RootBorderPane extends BorderPane {
     private PersonalbueroUebersicht personalbueroUebersicht;
     private Personalbuero personalbuero;
     private PersonalbueroDialog personalbueroDialog;
+    private HinzufuegenDialog hinzufuegenDialog;
 
     /*---------------------------------End of Components that are generated on demand------------------------------------------------------------------------*/
 
@@ -97,6 +98,7 @@ public class RootBorderPane extends BorderPane {
          personalbueroUebersicht = new PersonalbueroUebersicht(this);
          personalbuero = new Personalbuero();
          personalbueroDialog = new PersonalbueroDialog();
+         hinzufuegenDialog = new HinzufuegenDialog();
 
         /*---------------------------------End of Components that are generated on demand------------------------------------------------------------------------*/
 
@@ -240,6 +242,10 @@ public class RootBorderPane extends BorderPane {
             Main.showAlert(Alert.AlertType.ERROR, "Nothing has been selected for changes");
             
         }
+    }
+    
+    private void hinzufuegen(){
+       // hinzufuegenDialog.addNew();
     }
 
     private void info(){

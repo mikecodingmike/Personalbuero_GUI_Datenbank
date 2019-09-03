@@ -5,6 +5,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import model.Mitarbeiter;
 
 import java.time.Year;
 
@@ -75,6 +76,11 @@ public class HinzufuegenDialog extends Stage {
 		
 		rootHinzufuegenDialogGripPane.add(btOk,3,7,2,1);
 		rootHinzufuegenDialogGripPane.add(btAbbrechen,5,7,2,1);
+	}
+	
+	public void addNew(){
+		Mitarbeiter newMitarbeiter;
+		newMitarbeiter.setName(tfName.getText()); //we need to decide whether the mitarbeiter is a angestller or manager etc.
 	}
 	
 	public void btOk(){
