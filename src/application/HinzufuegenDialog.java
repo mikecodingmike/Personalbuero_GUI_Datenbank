@@ -1,28 +1,49 @@
 package application;
 
 import javafx.geometry.Insets;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import model.Mitarbeiter;
+import model.*;
 
+import java.awt.event.MouseEvent;
 import java.time.Year;
 
 public class HinzufuegenDialog extends Stage {
+	/* --------------------------------Originals: these are the original components for this.GridPane-------------------------------------------*/
 	
 	private GridPane rootHinzufuegenDialogGripPane;
-	private Label lbName, lbAdresse, lbgeb, lbEintrJahr, lbslManagerFixum, lbslAktManagerFixum;
+	private Label lbName, lbAdresse, lbgeb, lbEintrJahr, lbslManagerFixum, lbslAktManagerFixum, lbslFreeLancerStundenSatz, lbspFreeLancerStunden;
 	private TextField tfName, tfAdresse;
-	private Spinner<Integer> spGeb, spEintrjahr;
-	private Slider slManagerFixum;
-	private Button btOk, btAbbrechen;
 	private CheckBox cbGesch;
+	private FlowPane fpManagerInfoFlowPane, fpFreelancerInfoFlowPane;
+	private Spinner<Integer> spGeb, spEintrjahr;
+	private Spinner<Integer> spFreelancerStunden;
+	private Slider slManagerFixum;
+	private Slider slFreelancerStundenSatz;
+	private Button btOk, btAbbrechen;
+	/* --------------------------------End Of Originals: these are the original components for this.GridPane-------------------------------------------*/
+	
+	/*---------------------------------Components that are generated on demand------------------------------------------------------------------------*/
+	
+	private Mitarbeiter mitarbeiterToAdd;
+	protected PersonalbueroUebersicht.MyContectMenu myContectMenu;
+	protected PersonalbueroUebersicht personalbueroUebersicht;
+	protected Personalbuero personalbuero;
+	protected RootBorderPane rootBorderPane;
+	
+	
+	/*---------------------------------End Of Components that are generated on demand------------------------------------------------------------------------*/
 	
 	public HinzufuegenDialog(){
 		initBasics();
 		initComponents();
 		addComponents();
+		addListeners();
+		
 		
 	}
 	
@@ -46,18 +67,44 @@ public class HinzufuegenDialog extends Stage {
 		lbgeb = new Label("Geburtstag");
 		spGeb = new Spinner<>(Year.now().getValue()-100, Year.now().getValue()-15,Year.now().getValue()-30,1);
 		spGeb.setEditable(true);
+		cbGesch = new CheckBox("Maennlich");
+		
+		//---------------------------------------------------------------- Komponenten für Manager ------------------------------
+		
+		fpManagerInfoFlowPane = new FlowPane(20,0);
 		lbslManagerFixum = new Label("Manager Fixum");
 		slManagerFixum = new Slider(0,1000,100);
-		slManagerFixum.setSnapToTicks(true);
-		slManagerFixum.setShowTickMarks(true);
-		slManagerFixum.setShowTickLabels(true);
-		slManagerFixum.setMajorTickUnit(50);
+			slManagerFixum.setSnapToTicks(true);
+			slManagerFixum.setShowTickMarks(true);
+			slManagerFixum.setShowTickLabels(true);
+			slManagerFixum.setMajorTickUnit(50);
 		lbslAktManagerFixum = new Label("Akt:");
+		
+		//---------------------------------------------------------------- Komponenten für Freelancer ------------------------------
+		
+		fpFreelancerInfoFlowPane = new FlowPane(10,0);
+		lbspFreeLancerStunden = new Label("Stunden:");
+		spFreelancerStunden = new Spinner<>(0,80,40,1);
+		spFreelancerStunden.setEditable(true);
+		lbslFreeLancerStundenSatz = new Label("Stunden Satz:");
+		slFreelancerStundenSatz = new Slider(0,200,15);
+			slFreelancerStundenSatz.setMajorTickUnit(5);
+			slFreelancerStundenSatz.setShowTickLabels(true);
+			slFreelancerStundenSatz.setShowTickMarks(true);
+			slFreelancerStundenSatz.setSnapToTicks(true);
+		
+		//---------------------------------------------------------------- End of Komponenten für Freelancer ------------------------------
 		
 		btOk = new Button("OK");
 		btAbbrechen = new Button("Abbrechen");
 		
-		cbGesch = new CheckBox("Maennlich");
+		/*---------------------------------Components that are generated on demand------------------------------------------------------------------------*/
+		
+		Scene scene = new Scene(rootHinzufuegenDialogGripPane,500,350);
+		setScene(scene);
+		
+		personalbueroUebersicht = new PersonalbueroUebersicht(rootBorderPane);
+		personalbuero = new Personalbuero();
 	}
 	
 	private void addComponents(){
@@ -70,26 +117,146 @@ public class HinzufuegenDialog extends Stage {
 		rootHinzufuegenDialogGripPane.add(lbEintrJahr,0,3,1,1);
 		rootHinzufuegenDialogGripPane.add(spEintrjahr,1,3);
 		rootHinzufuegenDialogGripPane.add(cbGesch,1,4);
-		rootHinzufuegenDialogGripPane.add(lbslManagerFixum, 0,5,1,1);
+		
+		fpManagerInfoFlowPane.getChildren().addAll(lbslManagerFixum,slManagerFixum,lbslAktManagerFixum);
+		fpFreelancerInfoFlowPane.getChildren().addAll(lbspFreeLancerStunden, spFreelancerStunden, lbslFreeLancerStundenSatz,slFreelancerStundenSatz);
+		
+		/*rootHinzufuegenDialogGripPane.add(lbslManagerFixum, 0,5,1,1);
 		rootHinzufuegenDialogGripPane.add(slManagerFixum,1,5,2,1);
 		rootHinzufuegenDialogGripPane.add(lbslAktManagerFixum,4,5,2,1);
+		rootHinzufuegenDialogGripPane.add(slFreelancerStundenSatz,1,5,2,1);*/
+		rootHinzufuegenDialogGripPane.add(fpManagerInfoFlowPane,1,5,4,1);
+		rootHinzufuegenDialogGripPane.add(fpFreelancerInfoFlowPane,1,5,4,1);
 		
-		rootHinzufuegenDialogGripPane.add(btOk,3,7,2,1);
-		rootHinzufuegenDialogGripPane.add(btAbbrechen,5,7,2,1);
+		rootHinzufuegenDialogGripPane.add(btOk,3,8,2,1);
+		rootHinzufuegenDialogGripPane.add(btAbbrechen,5,8,2,1);
 	}
 	
-	public void addNew(){
-		Mitarbeiter newMitarbeiter;
-		newMitarbeiter.setName(tfName.getText()); //we need to decide whether the mitarbeiter is a angestller or manager etc.
+	private void hideAllFlowPanes(){
+		fpFreelancerInfoFlowPane.setVisible(false);
+		fpManagerInfoFlowPane.setVisible(false);
 	}
 	
-	public void btOk(){
-		//uebernehmen();
+	public void updateAndShow(Mitarbeiter mitarbeiter){  //this hinzufuegendialog doesnt need update and show
+		this.mitarbeiterToAdd = mitarbeiter;
+		hideAllFlowPanes();
+		tfName.setText(mitarbeiter.getName());
+		tfAdresse.setText(mitarbeiter.getAdresse());
+		spGeb.getValueFactory().setValue(mitarbeiter.getGeb());
+		spEintrjahr.getValueFactory().setValue(mitarbeiter.getEintr());
+		cbGesch.setSelected(mitarbeiter.getGesch()=='m'?true:false);
+
+//---------------------------------------------------------------- Aufbereiten Daten für diverse Typen ------------------------------
+		if(mitarbeiter instanceof Manager){
+			slManagerFixum.setValue(((Manager) mitarbeiter).getFixum());
+			fpManagerInfoFlowPane.setVisible(true);
+		}
+		else{
+			if(mitarbeiter instanceof Freelancer){
+				spFreelancerStunden.getValueFactory().setValue(((Freelancer) mitarbeiter).getStunden());
+				slFreelancerStundenSatz.setValue(((Freelancer) mitarbeiter).getStundensatz());
+				fpManagerInfoFlowPane.setVisible(true);
+			}
+		}
+		
+		showAndWait();
+	}
+	
+	public void  hinzufuegenAngestellter(){
+		mitarbeiterToAdd = new Angestellter();
+		addNew(mitarbeiterToAdd);
+		showAndWait();
+		hideAllFlowPanes();
+	}
+	
+	public void hinzufuegenManager(){
+		mitarbeiterToAdd = new Manager();
+		addNew(mitarbeiterToAdd);
+		showAndWait();
+	}
+	
+	public void hinzufuegenFreelancer(){
+		mitarbeiterToAdd = new Freelancer();
+		addNew(mitarbeiterToAdd);
+		showAndWait();
+	}
+	
+	private void addNew(Mitarbeiter mitarbeiterToAdd){
+		if(mitarbeiterToAdd instanceof Angestellter){
+			try{
+				mitarbeiterToAdd.setName((tfName.getText()));
+				mitarbeiterToAdd.setAdresse(tfAdresse.getText());
+				mitarbeiterToAdd.setGesch(cbGesch.isSelected()? 'm':'f');
+				mitarbeiterToAdd.setEintr(spEintrjahr.getValue());
+				mitarbeiterToAdd.setGeb(spGeb.getValue());
+				personalbuero.add(mitarbeiterToAdd);
+			}
+			catch (PersonalException e){
+				Main.showAlert(Alert.AlertType.ERROR, e.getMessage());
+			}
+		}
+		else{
+			if(mitarbeiterToAdd instanceof Manager){
+				try{
+					mitarbeiterToAdd.setName((tfName.getText()));
+					mitarbeiterToAdd.setAdresse(tfAdresse.getText());
+					mitarbeiterToAdd.setGesch(cbGesch.isSelected()? 'm':'f');
+					mitarbeiterToAdd.setEintr(spEintrjahr.getValue());
+					mitarbeiterToAdd.setGeb(spGeb.getValue());
+					((Manager) mitarbeiterToAdd).setFixum((float) slManagerFixum.getValue());
+					personalbuero.add(mitarbeiterToAdd);
+				}
+				catch (PersonalException e){
+					Main.showAlert(Alert.AlertType.ERROR,e.getMessage());
+				}
+			}
+			else{
+				if(mitarbeiterToAdd instanceof Freelancer){
+					try{
+						mitarbeiterToAdd.setName((tfName.getText()));
+						mitarbeiterToAdd.setAdresse(tfAdresse.getText());
+						mitarbeiterToAdd.setGesch(cbGesch.isSelected()? 'm':'f');
+						mitarbeiterToAdd.setEintr(spEintrjahr.getValue());
+						mitarbeiterToAdd.setGeb(spGeb.getValue());
+						((Freelancer) mitarbeiterToAdd).setStundensatz((float)slFreelancerStundenSatz.getValue());
+						personalbuero.add(mitarbeiterToAdd);
+					}
+					catch(PersonalException e){
+						Main.showAlert(Alert.AlertType.ERROR,e.getMessage());
+					}
+				}
+			}
+		}
+		
+		personalbueroUebersicht.updateAndShow(personalbuero.getMitarbeiter());
+	
+	}
+	
+	private void uebernehmen(){
+		try{
+			personalbuero.add(mitarbeiterToAdd);
+		}
+		catch(PersonalException e){
+			Main.showAlert(Alert.AlertType.ERROR,e.getMessage());
+		}
+	}
+	
+	
+	private void btOk(){
+		uebernehmen();
+		personalbueroUebersicht.updateAndShow(personalbuero.getMitarbeiter());
 		close();
 	}
 	
-	public void btAbbrechen(){
+	private void btAbbrechen(){
 		close();
+	}
+	
+	private void addListeners(){
+		
+		btAbbrechen.setOnAction(event -> btAbbrechen());
+		btOk.setOnAction(event -> btOk());
+		
 	}
 	
 }

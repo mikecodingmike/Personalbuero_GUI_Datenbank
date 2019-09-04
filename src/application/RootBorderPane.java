@@ -268,6 +268,10 @@ public class RootBorderPane extends BorderPane {
         miLoeschenMulti.setOnAction(event -> loeschenMulti());
         miLoechenEinzeln.setOnAction(event -> loeschenEinzel());
         
+        miHinzuManager.setOnAction(event -> hinzufuegenDialog.hinzufuegenManager());
+        miHinzuFreelancer.setOnAction(event -> hinzufuegenDialog.hinzufuegenFreelancer());
+        miHinzuAngestellter.setOnAction(event -> hinzufuegenDialog.hinzufuegenAngestellter());
+        
         miInfo.setOnAction(event -> info());
         miBeenden.setOnAction(event -> beenden());
 

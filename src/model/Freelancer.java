@@ -1,4 +1,5 @@
 package model;
+
 @SuppressWarnings("serial")
 public class Freelancer extends Mitarbeiter
 {
@@ -14,7 +15,7 @@ public class Freelancer extends Mitarbeiter
 		super(zeile);
 		setFreelancerFields(zeile);
 	}
-	public Freelancer()// für Variante mit Class.forName... notwendig
+	public Freelancer()// fï¿½r Variante mit Class.forName... notwendig
 	{
 	}
 	
@@ -28,11 +29,11 @@ public class Freelancer extends Mitarbeiter
 	}
 // ---------------------------------------- setter ----------------------------
 	public void setStundensatz(float stundensatz)
-	{// Plausibilitätsprüfung!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	{// Plausibilitï¿½tsprï¿½fung!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		this.stundensatz = stundensatz;
 	}
 	public void setStunden(int stunden)
-	{// Plausibilitätsprüfung!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	{// Plausibilitï¿½tsprï¿½fung!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		this.stunden = stunden;
 	}
 // ---------------------------------------- Ende Standard-setter -------------------
@@ -71,7 +72,7 @@ public class Freelancer extends Mitarbeiter
 
 	public float berechneGehalt()
 	{
-		return stundensatz * stunden + (stunden/100)*100;  // Für volle 100 Stunden je € 100 Bonus
+		return stundensatz * stunden + (stunden/100)*100;  // Fï¿½r volle 100 Stunden je ï¿½ 100 Bonus
 	}
 	public String toStringFix()
 	{
